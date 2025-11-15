@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}All Packages - Admin - Courier Tracking System{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>All Packages</h2>
+            <div>
+                <a href="{{ url_for('update_status') }}" class="btn btn-primary me-2">Update Status</a>
+                <a href="{{ url_for('confirm_delivery') }}" class="btn btn-success">Confirm Delivery</a>
+            </div>
+        </div>
+
+        {% if packages %}
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Tracking ID</th>
+                        <th>Customer</th>
+                        <th>Branch</th>
+                        <th>Weight</th>
+                        <th>Cost</th>
+                        <th>Booking Date</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for package in packages %}
+                    <tr>
+                        <td>{{ package.tracking_id }}</td>
+                        <td>{{ package.customer_name }}</td>
+                        <td>{{ package.branch_name }}</td>
+                        <td>{{ package.weight }} kg</td>
+                        <td>₹{{ package.cost }}</td>
+                        <td>{{ package.booking_date.strftime('%Y-%m-%d %H:%M') }}</td>
+                        <td>
+                            <span class="badge bg-{% if package.status == 'Delivered' %}success
+                                       {% elif package.status == 'In Transit' %}info
+                                       {% elif package.status == 'Out for Delivery' %}warning
+                                       {% else %}secondary{% endif %}">
+                                {{ package.status }}
+                            </span>
+                        </td>
+                        <td>
+                            <form action="{{ url_for('track') }}" method="POST" style="display: inline;">
+                                <input type="hidden" name="tracking_id" value="{{ package.tracking_id }}">
+                                <button type="submit" class="btn btn-sm btn-info">Track</button>
+                            </form>
+                            {% if package.status != 'Delivered' %}
+                            <a href="{{ url_for('update_status') }}?tracking_id={{ package.tracking_id }}" 
+                               class="btn btn-sm btn-warning">Update</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="alert alert-info">
+            No packages found in the system.
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

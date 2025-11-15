@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Update Status - Admin - Courier Tracking System{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Update Package Status</h3>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('update_status') }}">
+                    <div class="mb-3">
+                        <label for="tracking_id" class="form-label">Tracking ID</label>
+                        <input type="text" class="form-control" id="tracking_id" name="tracking_id" 
+                               value="{{ request.args.get('tracking_id', '') }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="status" class="form-label">New Status</label>
+                        <select class="form-select" id="status" name="status" required>
+                            <option value="">Select Status</option>
+                            <option value="Picked Up">Picked Up</option>
+                            <option value="In Transit">In Transit</option>
+                            <option value="Out for Delivery">Out for Delivery</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="location" class="form-label">Current Location</label>
+                        <input type="text" class="form-control" id="location" name="location" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update Status</button>
+                    <a href="{{ url_for('admin_packages') }}" class="btn btn-secondary">Back to Packages</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

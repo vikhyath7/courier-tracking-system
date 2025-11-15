@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Courier Tracking System{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 text-center">
+        <h1 class="mb-4">Welcome to Courier Tracking System</h1>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Track Your Package</h5>
+                <form action="{{ url_for('track') }}" method="POST" class="mt-3">
+                    <div class="input-group mb-3">
+                        <input type="text" name="tracking_id" class="form-control" placeholder="Enter Tracking ID" required>
+                        <button type="submit" class="btn btn-primary">Track</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Customer</h5>
+                        <p class="card-text">Send and track your packages</p>
+                        <a href="{{ url_for('login') }}" class="btn btn-primary">Login</a>
+                        <a href="{{ url_for('signup') }}" class="btn btn-outline-primary">Sign Up</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Staff</h5>
+                        <p class="card-text">Manage deliveries and updates</p>
+                        <a href="{{ url_for('admin_login') }}" class="btn btn-primary">Staff Login</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

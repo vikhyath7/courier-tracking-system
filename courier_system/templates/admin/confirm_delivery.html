@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Confirm Delivery - Admin - Courier Tracking System{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Confirm Package Delivery</h3>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('confirm_delivery') }}">
+                    <div class="mb-3">
+                        <label for="tracking_id" class="form-label">Tracking ID</label>
+                        <input type="text" class="form-control" id="tracking_id" name="tracking_id" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipient_name" class="form-label">Recipient Name</label>
+                        <input type="text" class="form-control" id="recipient_name" name="recipient_name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipient_contact" class="form-label">Recipient Contact</label>
+                        <input type="text" class="form-control" id="recipient_contact" name="recipient_contact" required>
+                    </div>
+                    <button type="submit" class="btn btn-success">Confirm Delivery</button>
+                    <a href="{{ url_for('admin_packages') }}" class="btn btn-secondary">Back to Packages</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

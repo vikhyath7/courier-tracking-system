@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}Track Package - Courier Tracking System{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3 class="card-title">Track Package</h3>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('track') }}">
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="tracking_id" placeholder="Enter Tracking ID" required>
+                        <button type="submit" class="btn btn-primary">Track</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        {% if package %}
+        <div class="card mb-4">
+            <div class="card-header">
+                <h4 class="card-title mb-0">Package Details</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Tracking ID:</strong> {{ package.tracking_id }}</p>
+                        <p><strong>Sender:</strong> {{ package.customer_name }}</p>
+                        <p><strong>Branch:</strong> {{ package.branch_name }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Weight:</strong> {{ package.weight }} kg</p>
+                        <p><strong>Cost:</strong> ₹{{ package.cost }}</p>
+                        <p><strong>Status:</strong> 
+                            <span class="badge bg-{% if package.status == 'Delivered' %}success
+                                       {% elif package.status == 'In Transit' %}info
+                                       {% elif package.status == 'Out for Delivery' %}warning
+                                       {% else %}secondary{% endif %}">
+                                {{ package.status }}
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% if tracking_history %}
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title mb-0">Tracking History</h4>
+            </div>
+            <div class="card-body">
+                <div class="timeline">
+                    {% for track in tracking_history %}
+                    <div class="row mb-3">
+                        <div class="col-md-3">
+                            <small class="text-muted">{{ track.update_time.strftime('%Y-%m-%d %H:%M') }}</small>
+                        </div>
+                        <div class="col-md-9">
+                            <p class="mb-0"><strong>{{ track.status }}</strong></p>
+                            {% if track.current_location %}
+                            <small class="text-muted">Location: {{ track.current_location }}</small>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        {% elif request.method == 'POST' %}
+        <div class="alert alert-danger">
+            No package found with this tracking ID.
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
